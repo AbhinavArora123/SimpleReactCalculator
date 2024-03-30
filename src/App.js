@@ -16,13 +16,7 @@ function reducer(state,{type , payload}){
   switch(type){
     case ACTIONS.ADD_DIGIT:
       if(payload.digit === "0" && state.currOp === "0") return state;
-      if(state.currOp == null && payload.digit === "."){
-        return {
-          ...state,
-          currOp: "0.",
-        }
-      }
-      if(payload.digit === "." && state.currOp.includes(".")) return{ ...state};
+      else if(payload.digit === "." && state.currOp.includes('.')) return state;
       return {
         ...state,
         currOp: `${state.currOp || ""}${payload.digit}`,
@@ -87,19 +81,24 @@ function reducer(state,{type , payload}){
 function calculate(prevString, currString, operation){
   let prevNum = Number.parseFloat(prevString);
   let currNum = Number.parseFloat(currString);
-
+  let ans;
   switch (operation){
     case "/":
-      return !Number.isInteger(prevNum/currNum)? (parseFloat(prevNum/currNum).toFixed(4)) : (prevNum/currNum);
+      ans = !Number.isInteger(prevNum/currNum)? (parseFloat(prevNum/currNum).toFixed(4)) : (prevNum/currNum);
+      break;
     case "X":
-      return !Number.isInteger(prevNum*currNum)? (parseFloat(prevNum*currNum).toFixed(4)) : (prevNum*currNum);
+      ans = !Number.isInteger(prevNum*currNum)? (parseFloat(prevNum*currNum).toFixed(4)) : (prevNum*currNum);
+      break;
     case "+":
-      return !Number.isInteger(prevNum+currNum)? (parseFloat(prevNum+currNum).toFixed(4)) : (prevNum+currNum);
+      ans = !Number.isInteger(prevNum+currNum)? (parseFloat(prevNum+currNum).toFixed(4)) : (prevNum+currNum);
+      break;
     case "-":
-      return !Number.isInteger(prevNum-currNum)? (parseFloat(prevNum-currNum).toFixed(4)) : (prevNum-currNum);
+      ans = !Number.isInteger(prevNum-currNum)? (parseFloat(prevNum-currNum).toFixed(4)) : (prevNum-currNum);
+      break;
     default:
-      return
+      return currString;
   }
+  return ans.toString();
 }
 
 function App() {
